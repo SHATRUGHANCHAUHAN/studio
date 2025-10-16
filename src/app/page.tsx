@@ -1,3 +1,9 @@
+import { FridgeChefClient } from '@/components/fridge-chef-client';
+
 export default function Home() {
-  return <></>;
+  return (
+    <main>
+      <FridgeChefClient />
+    </main>
+  );
 }

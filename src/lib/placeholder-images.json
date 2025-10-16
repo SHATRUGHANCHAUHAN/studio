@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "recipe-placeholder",
+      "description": "A placeholder image for a delicious recipe",
+      "imageUrl": "https://picsum.photos/seed/recipe-food/600/400",
+      "imageHint": "food cooking"
+    }
+  ]
 }
