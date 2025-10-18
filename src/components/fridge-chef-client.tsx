@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition, useMemo } from 'react';
 import { useFormState } from 'react-dom';
 import Image from 'next/image';
-import { generateRecipesAction, summarizeNutritionalInfoAction, generateRecipeImageAction } from '@/app/actions';
+import { generateRecipesAction, summarizeNutritionalInfoAction } from '@/app/actions';
 import type { GenerateRecipesOutput } from '@/ai/flows/generate-recipes-from-ingredients';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,9 +24,7 @@ export function FridgeChefClient() {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [nutritionalInfo, setNutritionalInfo] = useState<string | null>(null);
-  const [recipeImage, setRecipeImage] = useState<string | null>(null);
   const [isFetchingNutrition, setIsFetchingNutrition] = useState(false);
-  const [isFetchingImage, setIsFetchingImage] = useState(false);
   const [formKey, setFormKey] = useState(Date.now());
 
   const [generateRecipesState, formAction] = useFormState(generateRecipesAction, null);
@@ -51,23 +49,12 @@ export function FridgeChefClient() {
     if (selectedRecipe) {
       const fetchDetails = async () => {
         setIsFetchingNutrition(true);
-        setIsFetchingImage(true);
         setNutritionalInfo(null);
-        setRecipeImage(null);
 
-        const nutritionPromise = summarizeNutritionalInfoAction({
+        const nutritionResult = await summarizeNutritionalInfoAction({
           recipeName: selectedRecipe.title,
           ingredients: selectedRecipe.ingredients,
         });
-
-        const imagePromise = generateRecipeImageAction({
-          recipeTitle: selectedRecipe.title,
-        });
-
-        const [nutritionResult, imageResult] = await Promise.all([
-          nutritionPromise,
-          imagePromise
-        ]);
 
         if (nutritionResult.success) {
           setNutritionalInfo(nutritionResult.data);
@@ -79,25 +66,19 @@ export function FridgeChefClient() {
           });
         }
         setIsFetchingNutrition(false);
-
-        if (imageResult.success) {
-          setRecipeImage(imageResult.imageUrl);
-        } else {
-           if (placeholderImage) {
-            setRecipeImage(`${placeholderImage.imageUrl.split('/seed/')[0]}/seed/${selectedRecipe.title.replace(/\s/g, '-')}/600/400`);
-          }
-          toast({
-            variant: 'destructive',
-            title: 'Image Generation Error',
-            description: imageResult.error,
-          });
-        }
-        setIsFetchingImage(false);
       };
       fetchDetails();
     }
-  }, [selectedRecipe, toast, placeholderImage]);
+  }, [selectedRecipe, toast]);
   
+  const recipeImage = useMemo(() => {
+    if (selectedRecipe && placeholderImage) {
+      const seed = selectedRecipe.title.replace(/\s/g, '-');
+      return `${placeholderImage.imageUrl.split('/seed/')[0]}/seed/${seed}/600/400`;
+    }
+    return placeholderImage?.imageUrl;
+  }, [selectedRecipe, placeholderImage]);
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-screen-xl">
       <header className="flex justify-center mb-10">
@@ -185,12 +166,7 @@ export function FridgeChefClient() {
                     <ScrollArea className="h-[calc(100vh-6rem)]">
                       <CardHeader>
                         <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg bg-muted">
-                            {isFetchingImage ? (
-                                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
-                                    <ImageIcon className="h-10 w-10 animate-pulse" />
-                                    <p>Generating image...</p>
-                                </div>
-                            ) : recipeImage ? (
+                            {recipeImage ? (
                               <>
                                 <Image
                                   src={recipeImage}
@@ -202,7 +178,7 @@ export function FridgeChefClient() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                               </>
-                            ) : null }
+                            ) : <Skeleton className="w-full h-full" /> }
                           </div>
                         <CardTitle className="text-3xl font-headline">{selectedRecipe.title}</CardTitle>
                       </CardHeader>
