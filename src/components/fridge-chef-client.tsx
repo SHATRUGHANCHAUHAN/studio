@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
-import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils } from 'lucide-react';
+import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type Recipe = GenerateRecipesOutput[0];
@@ -70,137 +70,146 @@ export function FridgeChefClient() {
   const recipeImage = PlaceHolderImages.find(img => img.id === 'recipe-placeholder');
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
-      <header className="flex justify-center mb-8">
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-screen-xl">
+      <header className="flex justify-center mb-10">
         <Logo />
       </header>
 
-      <Card className="mb-8 shadow-lg border-2 border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 font-headline">
-            <ChefHat className="text-primary" />
-            What's in your fridge?
-          </CardTitle>
-          <CardDescription>
-            List your ingredients (e.g., chicken breast, broccoli, garlic) and we'll create recipes for you.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form key={formKey} action={(formData) => {
-            startTransition(() => formAction(formData))
-          }}>
-            <Textarea
-              name="ingredients"
-              placeholder="e.g., salmon, asparagus, lemon, olive oil"
-              className="min-h-[100px] text-base focus-visible:ring-primary"
-              required
-            />
-            <Button type="submit" className="mt-4 w-full sm:w-auto" disabled={isPending}>
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Generate Recipes
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-      
-      {isPending && !recipes && (
-        <div className="text-center p-8 flex flex-col items-center gap-4">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Creating culinary masterpieces...</p>
-        </div>
-      )}
-
-      {!recipes && !isPending && (
-         <div className="text-center p-8 border-2 border-dashed rounded-lg">
-          <CookingPot className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold text-foreground">Welcome to FridgeChef!</h3>
-          <p className="text-muted-foreground mt-2">
-            Enter your available ingredients above to get started.
-          </p>
-        </div>
-      )}
-
-      {recipes && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="md:col-span-1 shadow-md">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-4 xl:col-span-3">
+          <Card className="bg-card/70 border-border/50 sticky top-8">
             <CardHeader>
-              <CardTitle className="font-headline">Recipe Ideas</CardTitle>
+              <CardTitle className="flex items-center gap-2 font-headline">
+                <ChefHat className="text-primary" />
+                What's in your fridge?
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[600px]">
-                <div className="flex flex-col gap-2 pr-4">
-                  {recipes.map((recipe, index) => (
-                    <Button
-                      key={index}
-                      variant="ghost"
-                      data-active={selectedRecipe?.title === recipe.title}
-                      className="justify-start p-4 h-auto text-left data-[active=true]:bg-accent data-[active=true]:text-accent-foreground data-[active=true]:font-bold"
-                      onClick={() => setSelectedRecipe(recipe)}
-                    >
-                      {recipe.title}
-                    </Button>
-                  ))}
-                </div>
-              </ScrollArea>
+              <form key={formKey} action={(formData) => {
+                startTransition(() => formAction(formData))
+              }}>
+                <Textarea
+                  name="ingredients"
+                  placeholder="e.g., salmon, asparagus, lemon, olive oil..."
+                  className="min-h-[120px] text-base bg-background/50 focus-visible:ring-primary"
+                  required
+                />
+                <Button type="submit" className="mt-4 w-full" disabled={isPending}>
+                  {isPending ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="mr-2 h-4 w-4" />
+                  )}
+                  Generate Recipes
+                </Button>
+              </form>
             </CardContent>
           </Card>
-          
-          <div className="md:col-span-2">
-            {selectedRecipe ? (
-              <Card className="shadow-md sticky top-8">
-                <ScrollArea className="h-[calc(100vh-6rem)]">
-                <CardHeader>
-                  {recipeImage && (
-                     <div className="relative w-full h-64 rounded-lg overflow-hidden mb-4">
-                        <Image
-                          src={`${recipeImage.imageUrl.split('/seed/')[0]}/seed/${selectedRecipe.title.replace(/\s/g, '-')}/600/400`}
-                          alt={selectedRecipe.title}
-                          fill
-                          className="object-cover"
-                          data-ai-hint={recipeImage.imageHint}
-                        />
-                      </div>
-                  )}
-                  <CardTitle className="text-3xl font-headline">{selectedRecipe.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary"/>Ingredients</h3>
-                    <ul className="list-disc list-inside space-y-1 text-muted-foreground bg-muted/50 p-4 rounded-md">
-                      {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
-                    </ul>
-                  </div>
-                  <Separator />
-                   <div>
-                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary"/>Instructions</h3>
-                    <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-line text-foreground">
-                      {selectedRecipe.instructions}
-                    </div>
-                  </div>
-                  <Separator />
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary"/>Nutritional Summary</h3>
-                    {isFetchingNutrition ? (
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-3/4" />
-                      </div>
-                    ) : (
-                      <p className="text-muted-foreground">{nutritionalInfo || 'No nutritional information available.'}</p>
-                    )}
-                  </div>
-                </CardContent>
-                </ScrollArea>
-              </Card>
-            ) : (
-              <div className="flex items-center justify-center h-full rounded-lg border-2 border-dashed p-8">
-                <p className="text-muted-foreground">Select a recipe to see the details.</p>
-              </div>
-            )}
-          </div>
         </div>
-      )}
+
+        <main className="lg:col-span-8 xl:col-span-9">
+          {isPending && !recipes && (
+            <div className="text-center p-8 flex flex-col items-center justify-center h-full rounded-lg border-2 border-dashed border-border/50 gap-4">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              <p className="text-muted-foreground">Creating culinary masterpieces...</p>
+            </div>
+          )}
+
+          {!recipes && !isPending && (
+            <div className="text-center p-8 flex flex-col items-center justify-center h-full rounded-lg border-2 border-dashed border-border/50">
+              <CookingPot className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-semibold text-foreground">Welcome to FridgeChef!</h3>
+              <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+                Enter your available ingredients on the left to discover delicious recipes you can make right now.
+              </p>
+            </div>
+          )}
+
+          {recipes && (
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+              <Card className="xl:col-span-1 bg-card/70 border-border/50">
+                <CardHeader>
+                  <CardTitle className="font-headline">Recipe Ideas</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-[calc(100vh-16rem)]">
+                    <div className="flex flex-col gap-2 pr-4">
+                      {recipes.map((recipe, index) => (
+                        <Button
+                          key={index}
+                          variant="ghost"
+                          data-active={selectedRecipe?.title === recipe.title}
+                          className="justify-start p-3 h-auto text-left data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-semibold"
+                          onClick={() => setSelectedRecipe(recipe)}
+                        >
+                          {recipe.title}
+                        </Button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+              
+              <div className="xl:col-span-2">
+                {selectedRecipe ? (
+                  <Card className="bg-card/70 border-border/50 sticky top-8">
+                    <ScrollArea className="h-[calc(100vh-6rem)]">
+                      <CardHeader>
+                        {recipeImage && (
+                          <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg">
+                              <Image
+                                src={`${recipeImage.imageUrl.split('/seed/')[0]}/seed/${selectedRecipe.title.replace(/\s/g, '-')}/600/400`}
+                                alt={selectedRecipe.title}
+                                fill
+                                className="object-cover"
+                                data-ai-hint={recipeImage.imageHint}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            </div>
+                        )}
+                        <CardTitle className="text-3xl font-headline">{selectedRecipe.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-8 px-6 pb-8">
+                        <div>
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary"/>Ingredients</h3>
+                          <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/50 p-4 rounded-md border border-border/50">
+                            {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
+                          </ul>
+                        </div>
+                        <Separator />
+                        <div>
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary"/>Instructions</h3>
+                          <div className="prose prose-sm prose-invert max-w-none whitespace-pre-line text-foreground/90">
+                            {selectedRecipe.instructions}
+                          </div>
+                        </div>
+                        <Separator />
+                        <div>
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary"/>Nutritional Summary</h3>
+                          {isFetchingNutrition ? (
+                            <div className="space-y-2">
+                              <Skeleton className="h-4 w-full bg-muted/80" />
+                              <Skeleton className="h-4 w-full bg-muted/80" />
+                              <Skeleton className="h-4 w-3/4 bg-muted/80" />
+                            </div>
+                          ) : (
+                            <p className="text-muted-foreground">{nutritionalInfo || 'No nutritional information available.'}</p>
+
+                          )}
+                        </div>
+                      </CardContent>
+                    </ScrollArea>
+                  </Card>
+                ) : (
+                  <div className="flex items-center justify-center h-full rounded-lg border-2 border-dashed border-border/50 p-8">
+                    <p className="text-muted-foreground">Select a recipe to see the details.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
