@@ -1,19 +1,19 @@
 'use client';
 
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect, useTransition, useMemo } from 'react';
 import { useFormState } from 'react-dom';
 import Image from 'next/image';
-import { generateRecipesAction, summarizeNutritionalInfoAction } from '@/app/actions';
+import { generateRecipesAction, summarizeNutritionalInfoAction, generateRecipeImageAction } from '@/app/actions';
 import type { GenerateRecipesOutput } from '@/ai/flows/generate-recipes-from-ingredients';
 import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
-import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles } from 'lucide-react';
+import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type Recipe = GenerateRecipesOutput[0];
@@ -24,11 +24,15 @@ export function FridgeChefClient() {
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [nutritionalInfo, setNutritionalInfo] = useState<string | null>(null);
+  const [recipeImage, setRecipeImage] = useState<string | null>(null);
   const [isFetchingNutrition, setIsFetchingNutrition] = useState(false);
+  const [isFetchingImage, setIsFetchingImage] = useState(false);
   const [formKey, setFormKey] = useState(Date.now());
 
   const [generateRecipesState, formAction] = useFormState(generateRecipesAction, null);
   const [isPending, startTransition] = useTransition();
+
+  const placeholderImage = useMemo(() => PlaceHolderImages.find(img => img.id === 'recipe-placeholder'), []);
 
   useEffect(() => {
     if (generateRecipesState?.success) {
@@ -45,30 +49,55 @@ export function FridgeChefClient() {
 
   useEffect(() => {
     if (selectedRecipe) {
-      const getNutritionalInfo = async () => {
+      const fetchDetails = async () => {
         setIsFetchingNutrition(true);
+        setIsFetchingImage(true);
         setNutritionalInfo(null);
-        const result = await summarizeNutritionalInfoAction({
+        setRecipeImage(null);
+
+        const nutritionPromise = summarizeNutritionalInfoAction({
           recipeName: selectedRecipe.title,
           ingredients: selectedRecipe.ingredients,
         });
-        if (result.success) {
-          setNutritionalInfo(result.data);
+
+        const imagePromise = generateRecipeImageAction({
+          recipeTitle: selectedRecipe.title,
+        });
+
+        const [nutritionResult, imageResult] = await Promise.all([
+          nutritionPromise,
+          imagePromise
+        ]);
+
+        if (nutritionResult.success) {
+          setNutritionalInfo(nutritionResult.data);
         } else {
           toast({
             variant: 'destructive',
             title: 'Nutrition Info Error',
-            description: result.error,
+            description: nutritionResult.error,
           });
         }
         setIsFetchingNutrition(false);
-      };
-      getNutritionalInfo();
-    }
-  }, [selectedRecipe, toast]);
-  
-  const recipeImage = PlaceHolderImages.find(img => img.id === 'recipe-placeholder');
 
+        if (imageResult.success) {
+          setRecipeImage(imageResult.imageUrl);
+        } else {
+           if (placeholderImage) {
+            setRecipeImage(`${placeholderImage.imageUrl.split('/seed/')[0]}/seed/${selectedRecipe.title.replace(/\s/g, '-')}/600/400`);
+          }
+          toast({
+            variant: 'destructive',
+            title: 'Image Generation Error',
+            description: imageResult.error,
+          });
+        }
+        setIsFetchingImage(false);
+      };
+      fetchDetails();
+    }
+  }, [selectedRecipe, toast, placeholderImage]);
+  
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-screen-xl">
       <header className="flex justify-center mb-10">
@@ -155,18 +184,26 @@ export function FridgeChefClient() {
                   <Card className="bg-card/70 border-border/50 sticky top-8">
                     <ScrollArea className="h-[calc(100vh-6rem)]">
                       <CardHeader>
-                        {recipeImage && (
-                          <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg">
-                              <Image
-                                src={`${recipeImage.imageUrl.split('/seed/')[0]}/seed/${selectedRecipe.title.replace(/\s/g, '-')}/600/400`}
-                                alt={selectedRecipe.title}
-                                fill
-                                className="object-cover"
-                                data-ai-hint={recipeImage.imageHint}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                            </div>
-                        )}
+                        <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg bg-muted">
+                            {isFetchingImage ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                                    <ImageIcon className="h-10 w-10 animate-pulse" />
+                                    <p>Generating image...</p>
+                                </div>
+                            ) : recipeImage ? (
+                              <>
+                                <Image
+                                  src={recipeImage}
+                                  alt={selectedRecipe.title}
+                                  fill
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  className="object-cover"
+                                  data-ai-hint="food cooking"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                              </>
+                            ) : null }
+                          </div>
                         <CardTitle className="text-3xl font-headline">{selectedRecipe.title}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-8 px-6 pb-8">

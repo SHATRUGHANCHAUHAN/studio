@@ -3,3 +3,4 @@ config();
 
 import '@/ai/flows/summarize-nutritional-information.ts';
 import '@/ai/flows/generate-recipes-from-ingredients.ts';
+import '@/ai/flows/generate-recipe-image.ts';
