@@ -87,10 +87,10 @@ export function FridgeChefClient() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-4 xl:col-span-3">
-          <Card className="bg-card/70 border-border/50 sticky top-8">
+          <Card className="bg-card/70 border-border/50 sticky top-8 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-headline">
-                <ChefHat className="text-primary" />
+                <ChefHat className="text-primary-foreground" />
                 What's in your fridge?
               </CardTitle>
             </CardHeader>
@@ -101,10 +101,10 @@ export function FridgeChefClient() {
                 <Textarea
                   name="ingredients"
                   placeholder="e.g., salmon, asparagus, lemon, olive oil..."
-                  className="min-h-[120px] text-base bg-background/50 focus-visible:ring-primary"
+                  className="min-h-[120px] text-base bg-background/50 focus-visible:ring-primary-foreground"
                   required
                 />
-                <Button type="submit" className="mt-4 w-full" disabled={isPending}>
+                <Button type="submit" className="mt-4 w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90" disabled={isPending}>
                   {isPending ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
@@ -120,7 +120,7 @@ export function FridgeChefClient() {
         <main className="lg:col-span-8 xl:col-span-9">
           {isPending && !recipes && (
             <div className="text-center p-8 flex flex-col items-center justify-center h-full rounded-lg border-2 border-dashed border-border/50 gap-4">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              <Loader2 className="h-12 w-12 animate-spin text-primary-foreground" />
               <p className="text-muted-foreground">Creating culinary masterpieces...</p>
             </div>
           )}
@@ -137,7 +137,7 @@ export function FridgeChefClient() {
 
           {recipes && (
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-              <Card className="xl:col-span-1 bg-card/70 border-border/50">
+              <Card className="xl:col-span-1 bg-card/70 border-border/50 shadow-sm">
                 <CardHeader>
                   <CardTitle className="font-headline">Recipe Ideas</CardTitle>
                 </CardHeader>
@@ -149,7 +149,7 @@ export function FridgeChefClient() {
                           key={index}
                           variant="ghost"
                           data-active={selectedRecipe?.title === recipe.title}
-                          className="justify-start p-3 h-auto text-left data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-semibold"
+                          className="justify-start p-3 h-auto text-left data-[active=true]:bg-primary/20 data-[active=true]:text-primary-foreground data-[active=true]:font-semibold"
                           onClick={() => setSelectedRecipe(recipe)}
                         >
                           {recipe.title}
@@ -162,7 +162,7 @@ export function FridgeChefClient() {
               
               <div className="xl:col-span-2">
                 {selectedRecipe ? (
-                  <Card className="bg-card/70 border-border/50 sticky top-8">
+                  <Card className="bg-card/70 border-border/50 sticky top-8 shadow-sm">
                     <ScrollArea className="h-[calc(100vh-6rem)]">
                       <CardHeader>
                         <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg bg-muted">
@@ -176,7 +176,7 @@ export function FridgeChefClient() {
                                   className="object-cover"
                                   data-ai-hint="food cooking"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                               </>
                             ) : <Skeleton className="w-full h-full" /> }
                           </div>
@@ -184,21 +184,21 @@ export function FridgeChefClient() {
                       </CardHeader>
                       <CardContent className="space-y-8 px-6 pb-8">
                         <div>
-                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary"/>Ingredients</h3>
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>Ingredients</h3>
                           <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/50 p-4 rounded-md border border-border/50">
                             {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
                           </ul>
                         </div>
                         <Separator />
                         <div>
-                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary"/>Instructions</h3>
-                          <div className="prose prose-sm prose-invert max-w-none whitespace-pre-line text-foreground/90">
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
+                          <div className="prose prose-sm max-w-none whitespace-pre-line text-foreground/90">
                             {selectedRecipe.instructions}
                           </div>
                         </div>
                         <Separator />
                         <div>
-                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary"/>Nutritional Summary</h3>
+                          <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>Nutritional Summary</h3>
                           {isFetchingNutrition ? (
                             <div className="space-y-2">
                               <Skeleton className="h-4 w-full bg-muted/80" />
