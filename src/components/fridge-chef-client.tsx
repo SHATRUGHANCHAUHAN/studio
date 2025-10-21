@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useTransition, useMemo } from 'react';
 import { useFormState } from 'react-dom';
-import Image from 'next/image';
 import { generateRecipesAction, summarizeNutritionalInfoAction } from '@/app/actions';
 import type { GenerateRecipesOutput } from '@/ai/flows/generate-recipes-from-ingredients';
 import { useToast } from '@/hooks/use-toast';
@@ -13,8 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
-import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, Image as ImageIcon } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles } from 'lucide-react';
 
 type Recipe = GenerateRecipesOutput[0];
 
@@ -29,8 +27,6 @@ export function FridgeChefClient() {
 
   const [generateRecipesState, formAction] = useFormState(generateRecipesAction, null);
   const [isPending, startTransition] = useTransition();
-
-  const placeholderImage = useMemo(() => PlaceHolderImages.find(img => img.id === 'recipe-placeholder'), []);
 
   useEffect(() => {
     if (generateRecipesState?.success) {
@@ -70,14 +66,6 @@ export function FridgeChefClient() {
       fetchDetails();
     }
   }, [selectedRecipe, toast]);
-  
-  const recipeImage = useMemo(() => {
-    if (selectedRecipe && placeholderImage) {
-      const seed = selectedRecipe.title.replace(/\s/g, '-');
-      return `${placeholderImage.imageUrl.split('/seed/')[0]}/seed/${seed}/600/400`;
-    }
-    return placeholderImage?.imageUrl;
-  }, [selectedRecipe, placeholderImage]);
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-screen-xl">
@@ -165,21 +153,6 @@ export function FridgeChefClient() {
                   <Card className="bg-card/70 border-border/50 sticky top-8 shadow-sm">
                     <ScrollArea className="h-[calc(100vh-6rem)]">
                       <CardHeader>
-                        <div className="relative w-full h-72 rounded-lg overflow-hidden mb-6 shadow-lg bg-muted">
-                            {recipeImage ? (
-                              <>
-                                <Image
-                                  src={recipeImage}
-                                  alt={selectedRecipe.title}
-                                  fill
-                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                  className="object-cover"
-                                  data-ai-hint="food cooking"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                              </>
-                            ) : <Skeleton className="w-full h-full" /> }
-                          </div>
                         <CardTitle className="text-3xl font-headline">{selectedRecipe.title}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-8 px-6 pb-8">
