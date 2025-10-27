@@ -80,7 +80,7 @@ export function FridgeChefClient() {
         <Logo />
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <aside className="lg:col-span-4 xl:col-span-3">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -170,23 +170,25 @@ export function FridgeChefClient() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {recipes.map((recipe, index) => (
-                          <motion.button
-                            key={index}
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
-                            data-active={selectedRecipe?.title === recipe.title}
-                            className="text-left p-4 rounded-lg transition-all duration-200 border-2 border-transparent hover:border-primary/50 hover:bg-primary/10 data-[active=true]:bg-primary/20 data-[active=true]:border-primary/80 data-[active=true]:shadow-md"
-                            onClick={() => setSelectedRecipe(recipe)}
-                          >
-                            <h3 className="font-bold text-lg text-foreground data-[active=true]:text-primary-foreground">
-                              {recipe.title}
-                            </h3>
-                          </motion.button>
-                        ))}
-                      </div>
+                      <ScrollArea className="h-full max-h-48">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {recipes.map((recipe, index) => (
+                            <motion.button
+                              key={index}
+                              initial={{ opacity: 0, y: 15 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3, delay: index * 0.05 }}
+                              data-active={selectedRecipe?.title === recipe.title}
+                              className="text-left p-4 rounded-lg transition-all duration-200 border-2 border-transparent hover:border-primary/50 hover:bg-primary/10 data-[active=true]:bg-primary/20 data-[active=true]:border-primary/80 data-[active=true]:shadow-md"
+                              onClick={() => setSelectedRecipe(recipe)}
+                            >
+                              <h3 className="font-bold text-lg text-foreground data-[active=true]:text-primary-foreground">
+                                {recipe.title}
+                              </h3>
+                            </motion.button>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </CardContent>
                   </Card>
                   
@@ -199,43 +201,41 @@ export function FridgeChefClient() {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.4 }}
                     >
-                      <Card className="bg-card/70 border-border/50 shadow-sm sticky top-8">
-                        <ScrollArea className="h-auto max-h-[calc(100vh-8rem)]">
-                          <CardHeader>
-                            <CardTitle className="text-3xl font-headline tracking-tight">{selectedRecipe.title}</CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-8 px-6 pb-8">
-                            <div className="grid md:grid-cols-2 gap-8">
-                              <div>
-                                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>Ingredients</h3>
-                                <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/30 p-4 rounded-md border border-border/30">
-                                  {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
-                                </ul>
-                              </div>
-                              <div>
-                                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>Nutritional Summary</h3>
-                                {isFetchingNutrition ? (
-                                  <div className="space-y-2 pt-2">
-                                    <Skeleton className="h-4 w-full bg-muted/80" />
-                                    <Skeleton className="h-4 w-full bg-muted/80" />
-                                    <Skeleton className="h-4 w-3/4 bg-muted/80" />
-                                  </div>
-                                ) : (
-                                  <p className="text-muted-foreground">{nutritionalInfo || 'No nutritional information available.'}</p>
-                                )}
-                              </div>
-                            </div>
-                            <Separator />
+                      <Card className="bg-card/70 border-border/50 shadow-sm">
+                        <CardHeader>
+                          <CardTitle className="text-3xl font-headline tracking-tight">{selectedRecipe.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-8 px-6 pb-8">
+                          <div className="grid md:grid-cols-2 gap-8">
                             <div>
-                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
-                              <div className="prose prose-neutral dark:prose-invert max-w-none">
-                                <ol>
-                                  {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
-                                </ol>
-                              </div>
+                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>Ingredients</h3>
+                              <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/30 p-4 rounded-md border border-border/30">
+                                {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
+                              </ul>
                             </div>
-                          </CardContent>
-                        </ScrollArea>
+                            <div>
+                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>Nutritional Summary</h3>
+                              {isFetchingNutrition ? (
+                                <div className="space-y-2 pt-2">
+                                  <Skeleton className="h-4 w-full bg-muted/80" />
+                                  <Skeleton className="h-4 w-full bg-muted/80" />
+                                  <Skeleton className="h-4 w-3/4 bg-muted/80" />
+                                </div>
+                              ) : (
+                                <p className="text-muted-foreground">{nutritionalInfo || 'No nutritional information available.'}</p>
+                              )}
+                            </div>
+                          </div>
+                          <Separator />
+                          <div>
+                            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
+                            <div className="prose prose-neutral dark:prose-invert max-w-none">
+                              <ol>
+                                {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
+                              </ol>
+                            </div>
+                          </div>
+                        </CardContent>
                       </Card>
                     </motion.div>
                   )}
