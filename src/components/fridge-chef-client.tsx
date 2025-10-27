@@ -30,7 +30,7 @@ export function FridgeChefClient() {
   useEffect(() => {
     if (generateRecipesState?.success) {
       setRecipes(generateRecipesState.data);
-      setSelectedRecipe(generateRecipesesState.data[0]);
+      setSelectedRecipe(generateRecipesState.data[0]);
     } else if (generateRecipesState?.error) {
       toast({
         variant: 'destructive',
