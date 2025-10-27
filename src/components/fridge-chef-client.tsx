@@ -227,8 +227,8 @@ export function FridgeChefClient() {
                             <Separator />
                             <div>
                               <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
-                              <div className="prose prose-sm max-w-none prose-p:text-foreground/90 prose-li:text-foreground/90 whitespace-pre-line text-foreground/90">
-                                {selectedRecipe.instructions}
+                              <div className="prose prose-neutral dark:prose-invert max-w-none">
+                                <p className="whitespace-pre-line">{selectedRecipe.instructions}</p>
                               </div>
                             </div>
                           </CardContent>
@@ -246,3 +246,5 @@ export function FridgeChefClient() {
     </div>
   );
 }
+
+    
