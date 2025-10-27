@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useTransition, useMemo } from 'react';
-import { useFormState } from 'react-dom';
+import { useState, useEffect, useTransition, useMemo, useActionState } from 'react';
 import { generateRecipesAction, summarizeNutritionalInfoAction } from '@/app/actions';
 import type { GenerateRecipesOutput } from '@/ai/flows/generate-recipes-from-ingredients';
 import { useToast } from '@/hooks/use-toast';
@@ -25,8 +24,7 @@ export function FridgeChefClient() {
   const [isFetchingNutrition, setIsFetchingNutrition] = useState(false);
   const [formKey, setFormKey] = useState(Date.now());
 
-  const [generateRecipesState, formAction] = useFormState(generateRecipesAction, null);
-  const [isPending, startTransition] = useTransition();
+  const [generateRecipesState, formAction, isPending] = useActionState(generateRecipesAction, null);
 
   useEffect(() => {
     if (generateRecipesState?.success) {
@@ -83,9 +81,7 @@ export function FridgeChefClient() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form key={formKey} action={(formData) => {
-                startTransition(() => formAction(formData))
-              }}>
+              <form key={formKey} action={formAction}>
                 <Textarea
                   name="ingredients"
                   placeholder="e.g., salmon, asparagus, lemon, olive oil..."
