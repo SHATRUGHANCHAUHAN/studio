@@ -21,7 +21,7 @@ export type GenerateRecipesInput = z.infer<typeof GenerateRecipesInputSchema>;
 const RecipeSchema = z.object({
   title: z.string().describe('The title of the recipe.'),
   ingredients: z.array(z.string()).describe('A list of ingredients required for the recipe.'),
-  instructions: z.string().describe('Detailed, step-by-step instructions for preparing the recipe. Each step should be clearly explained and easy to follow.'),
+  instructions: z.array(z.string()).describe('Detailed, step-by-step instructions for preparing the recipe, with each step as an item in the array.'),
 });
 
 const GenerateRecipesOutputSchema = z.array(RecipeSchema).describe('A list of recipes that can be made with the given ingredients.');
@@ -35,7 +35,7 @@ const prompt = ai.definePrompt({
   name: 'generateRecipesPrompt',
   input: {schema: GenerateRecipesInputSchema},
   output: {schema: GenerateRecipesOutputSchema},
-  prompt: `You are a world-class chef. Given the following ingredients, suggest a list of recipes that can be made. For each recipe, provide detailed, step-by-step instructions that are easy for a home cook to follow.
+  prompt: `You are a world-class chef. Given the following ingredients, suggest a list of recipes that can be made. For each recipe, provide detailed, step-by-step instructions that are easy for a home cook to follow. Return the instructions as a list of strings.
 
 Ingredients: {{{ingredients}}}
 
