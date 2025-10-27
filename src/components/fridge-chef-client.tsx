@@ -30,7 +30,7 @@ export function FridgeChefClient() {
   useEffect(() => {
     if (generateRecipesState?.success) {
       setRecipes(generateRecipesState.data);
-      setSelectedRecipe(generateRecipesState.data[0]);
+      setSelectedRecipe(generateRecipesesState.data[0]);
     } else if (generateRecipesState?.error) {
       toast({
         variant: 'destructive',
@@ -102,7 +102,7 @@ export function FridgeChefClient() {
                     className="min-h-[150px] text-base bg-background/50 focus-visible:ring-primary-foreground focus-visible:ring-2 border-border/60"
                     required
                   />
-                  <Button type="submit" className="mt-4 w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-md font-bold py-6" disabled={isPending}>
+                  <Button type="submit" className="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90 text-md font-bold py-6" disabled={isPending}>
                     {isPending ? (
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     ) : (
@@ -134,7 +134,7 @@ export function FridgeChefClient() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center justify-center h-full min-h-[500px] rounded-2xl border-2 border-dashed border-border/30 gap-6 text-center"
               >
-                <Loader2 className="h-16 w-16 animate-spin text-primary-foreground" />
+                <Loader2 className="h-16 w-16 animate-spin text-primary" />
                 <h3 className="text-2xl font-bold text-foreground tracking-tight">Crafting your culinary creations...</h3>
                 <p className="text-muted-foreground max-w-sm">Our AI chef is looking through the pantry and heating up the pans. Your delicious recipes will be ready in a moment!</p>
               </motion.div>
@@ -228,7 +228,9 @@ export function FridgeChefClient() {
                             <div>
                               <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
                               <div className="prose prose-neutral dark:prose-invert max-w-none">
-                                <p className="whitespace-pre-line">{selectedRecipe.instructions}</p>
+                                <ol>
+                                  {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
+                                </ol>
                               </div>
                             </div>
                           </CardContent>
@@ -246,5 +248,3 @@ export function FridgeChefClient() {
     </div>
   );
 }
-
-    
