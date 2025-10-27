@@ -49,6 +49,7 @@ export function FridgeChefClient() {
         const nutritionResult = await summarizeNutritionalInfoAction({
           recipeName: selectedRecipe.title,
           ingredients: selectedRecipe.ingredients,
+          instructions: selectedRecipe.instructions,
         });
 
         if (nutritionResult.success) {

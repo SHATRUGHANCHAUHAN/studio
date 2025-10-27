@@ -14,6 +14,7 @@ import {z} from 'genkit';
 const SummarizeNutritionalInformationInputSchema = z.object({
   recipeName: z.string().describe('The name of the recipe.'),
   ingredients: z.array(z.string()).describe('A list of ingredients in the recipe.'),
+  instructions: z.array(z.string()).describe('The detailed, step-by-step instructions for the recipe.'),
 });
 export type SummarizeNutritionalInformationInput = z.infer<typeof SummarizeNutritionalInformationInputSchema>;
 
@@ -36,6 +37,7 @@ const summarizeNutritionalInformationPrompt = ai.definePrompt({
 
   Recipe Name: {{{recipeName}}}
   Ingredients: {{#each ingredients}}{{{this}}}, {{/each}}
+  Instructions: {{#each instructions}}{{{this}}} {{/each}}
 
   Provide a concise summary of the nutritional information of the recipe, highlighting key nutrients and potential health benefits or concerns.`,
 });
