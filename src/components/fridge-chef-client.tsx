@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, BookOpen, Globe } from 'lucide-react';
+import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, BookOpen, Globe, Heart } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -38,7 +38,8 @@ const translations = {
     nutritionalSummary: "Nutritional Summary",
     instructions: "Instructions",
     noNutrition: "No nutritional information available.",
-    language: "Language"
+    language: "Language",
+    favorites: "Favorites"
   },
   es: {
     whatsInYourFridge: "¿Qué hay en tu nevera?",
@@ -54,7 +55,8 @@ const translations = {
     nutritionalSummary: "Resumen Nutricional",
     instructions: "Instrucciones",
     noNutrition: "No hay información nutricional disponible.",
-    language: "Idioma"
+    language: "Idioma",
+    favorites: "Favoritos"
   },
   fr: {
     whatsInYourFridge: "Qu'y a-t-il dans votre frigo ?",
@@ -70,7 +72,8 @@ const translations = {
     nutritionalSummary: "Résumé Nutritionnel",
     instructions: "Instructions",
     noNutrition: "Aucune information nutritionnelle disponible.",
-    language: "Langue"
+    language: "Langue",
+    favorites: "Favoris"
   },
   hi: {
     whatsInYourFridge: "आपके फ्रिज में क्या है?",
@@ -86,7 +89,8 @@ const translations = {
     nutritionalSummary: "पोषण संबंधी सारांश",
     instructions: "निर्देश",
     noNutrition: "कोई पोषण संबंधी जानकारी उपलब्ध नहीं है।",
-    language: "भाषा"
+    language: "भाषा",
+    favorites: "पसंदीदा"
   },
   gu: {
     whatsInYourFridge: "તમારા ફ્રિજમાં શું છે?",
@@ -102,7 +106,8 @@ const translations = {
     nutritionalSummary: "પોષણ સારાંશ",
     instructions: "સૂચનાઓ",
     noNutrition: "કોઈ પોષક માહિતી ઉપલબ્ધ નથી।",
-    language: "ભાષા"
+    language: "ભાષા",
+    favorites: "મનપસંદ"
   },
   ta: {
     whatsInYourFridge: "உங்கள் குளிர்சாதன பெட்டியில் என்ன இருக்கிறது?",
@@ -118,7 +123,8 @@ const translations = {
     nutritionalSummary: "ஊட்டச்சத்து சுருக்கம்",
     instructions: "வழிமுறைகள்",
     noNutrition: "ஊட்டச்சத்து தகவல் எதுவும் கிடைக்கவில்லை.",
-    language: "மொழி"
+    language: "மொழி",
+    favorites: "பிடித்தவை"
   },
   or: {
     whatsInYourFridge: "ଆପଣଙ୍କ ଫ୍ରିଜରେ କ'ଣ ଅଛି?",
@@ -134,7 +140,8 @@ const translations = {
     nutritionalSummary: "ପୋଷଣ ସାରାଂଶ",
     instructions: "ନିର୍ଦ୍ଦେଶାବଳୀ",
     noNutrition: "କୌଣସି ପୋଷଣ ସମ୍ବନ୍ଧୀୟ ସୂଚନା ଉପଲବ୍ଧ ନାହିଁ।",
-    language: "ଭାଷା"
+    language: "ଭାଷା",
+    favorites: "ପସନ୍ଦିତ"
   },
   pa: {
     whatsInYourFridge: "ਤੁਹਾਡੇ ਫਰਿੱਜ ਵਿੱਚ ਕੀ ਹੈ?",
@@ -150,7 +157,8 @@ const translations = {
     nutritionalSummary: "ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਸਾਰ",
     instructions: "ਹਦਾਇਤਾਂ",
     noNutrition: "ਕੋਈ ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
-    language: "ਭਾਸ਼ਾ"
+    language: "ਭਾਸ਼ਾ",
+    favorites: "ਮਨਪਸੰਦ"
   },
   ur: {
     whatsInYourFridge: "آپ کے فریج میں کیا ہے؟",
@@ -158,7 +166,7 @@ const translations = {
     generateRecipes: "ترکیبیں بنائیں",
     startNewSearch: "نئی تلاش شروع کریں",
     craftingCulinary: "آپ کے پکوان کی تخلیقات تیار ہو رہی ہیں...",
-    aiChefWorking: "ہمارا اے آئی شیف پینٹری میں دیکھ رہا ہے اور پین گرم کر رہا ہے۔ آپ کی مزیدار ترکیبیں ایک لمحے میں تیار ہو جائیں گی!",
+    aiChefWorking: "ہمارا اے آئی شیف پینٹری میں دیکھ रहा ہے اور پین گرم کر رہا ہے۔ آپ کی مزیدار ترکیبیں ایک لمحے میں تیار ہو جائیں گی!",
     welcome: "آپ کے ذاتی کچن اے آئی میں خوش آمدید!",
     welcomeSub: "کیا پکانا ہے، یہ سوچ کر تھک گئے ہیں؟ آپ کے پاس جو اجزاء ہیں، وہ درج کریں، اور فرج شیف کو آپ کے اگلے کھانے کے لیے متاثر کرنے دیں۔",
     recipeIdeas: "ترکیب کے آئیڈیاز",
@@ -166,7 +174,8 @@ const translations = {
     nutritionalSummary: "غذائی خلاصہ",
     instructions: "ہدایات",
     noNutrition: "کوئی غذائی معلومات دستیاب نہیں ہے۔",
-    language: "زبان"
+    language: "زبان",
+    favorites: "پسندیدہ"
   }
 };
 
@@ -179,6 +188,7 @@ export function FridgeChefClient() {
   const [nutritionalInfo, setNutritionalInfo] = useState<string | null>(null);
   const [isFetchingNutrition, setIsFetchingNutrition] = useState(false);
   const [formKey, setFormKey] = useState(Date.now());
+  const [favorites, setFavorites] = useState<Recipe[]>([]);
 
   const [generateRecipesState, formAction, isPending] = useActionState(generateRecipesAction, null);
 
@@ -232,6 +242,19 @@ export function FridgeChefClient() {
     setFormKey(Date.now());
   };
 
+  const toggleFavorite = (recipe: Recipe) => {
+    setFavorites(prevFavorites => {
+      const isFavorite = prevFavorites.some(fav => fav.title === recipe.title);
+      if (isFavorite) {
+        return prevFavorites.filter(fav => fav.title !== recipe.title);
+      } else {
+        return [...prevFavorites, recipe];
+      }
+    });
+  };
+
+  const isFavorite = (recipe: Recipe) => favorites.some(fav => fav.title === recipe.title);
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-screen-2xl">
       <header className="flex justify-center mb-10">
@@ -239,7 +262,7 @@ export function FridgeChefClient() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <aside className="lg:col-span-4 xl:col-span-3">
+        <aside className="lg:col-span-4 xl:col-span-3 space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -304,6 +327,39 @@ export function FridgeChefClient() {
               </CardContent>
             </Card>
           </motion.div>
+          {favorites.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="sticky top-[calc(100vh-280px)]"
+            >
+              <Card className="bg-card/70 border-border/50 shadow-lg transition-all duration-300 hover:shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 font-headline text-xl">
+                    <Heart size={24} className="text-primary-foreground" />
+                    {t.favorites}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ScrollArea className="h-[150px]">
+                    <div className="space-y-2">
+                      {favorites.map((fav, index) => (
+                        <Button
+                          key={index}
+                          variant="ghost"
+                          className="w-full justify-start"
+                          onClick={() => setSelectedRecipe(fav)}
+                        >
+                          {fav.title}
+                        </Button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
         </aside>
 
         <main className="lg:col-span-8 xl:col-span-9">
@@ -352,7 +408,7 @@ export function FridgeChefClient() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ScrollArea>
+                      <ScrollArea className="max-h-[200px]">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {recipes.map((recipe, index) => (
                             <motion.button
@@ -385,15 +441,22 @@ export function FridgeChefClient() {
                     >
                       <Card className="bg-card/70 border-border/50 shadow-sm">
                         <CardHeader>
-                          <CardTitle className="text-3xl font-headline tracking-tight">{selectedRecipe.title}</CardTitle>
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="text-3xl font-headline tracking-tight">{selectedRecipe.title}</CardTitle>
+                              <Button variant="ghost" size="icon" onClick={() => toggleFavorite(selectedRecipe)}>
+                                <Heart className={cn("w-6 h-6", isFavorite(selectedRecipe) ? "fill-red-500 text-red-500" : "text-gray-400")} />
+                              </Button>
+                            </div>
                         </CardHeader>
                         <CardContent className="space-y-8 px-6 pb-8">
                           <div className="grid md:grid-cols-2 gap-8">
                             <div>
                               <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>{t.ingredients}</h3>
-                              <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/30 p-4 rounded-md border border-border/30">
-                                {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
-                              </ul>
+                              <ScrollArea className="h-48">
+                                <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/30 p-4 rounded-md border border-border/30">
+                                  {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
+                                </ul>
+                              </ScrollArea>
                             </div>
                             <div>
                               <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>{t.nutritionalSummary}</h3>
@@ -411,11 +474,13 @@ export function FridgeChefClient() {
                           <Separator />
                           <div>
                             <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>{t.instructions}</h3>
-                            <div className="prose prose-neutral dark:prose-invert max-w-none">
-                              <ol>
-                                {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
-                              </ol>
-                            </div>
+                            <ScrollArea className="h-auto">
+                              <div className="prose prose-neutral dark:prose-invert max-w-none">
+                                <ol>
+                                  {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
+                                </ol>
+                              </div>
+                            </ScrollArea>
                           </div>
                         </CardContent>
                       </Card>
