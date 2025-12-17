@@ -56,7 +56,12 @@ export async function summarizeNutritionalInfoAction(
   input: SummarizeNutritionalInformationInput
 ): Promise<SummarizeNutritionalInfoActionResult> {
   try {
-    const result = await summarizeNutritionalInformation(input);
+    const result = await summarizeNutritionalInformation({
+      recipeName: input.recipeName,
+      ingredients: input.ingredients,
+      instructions: input.instructions,
+      language: input.language
+    });
     return { success: true, data: result.summary };
   } catch (error) {
     console.error('Error summarizing nutritional info:', error);
