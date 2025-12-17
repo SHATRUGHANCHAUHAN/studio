@@ -71,6 +71,102 @@ const translations = {
     instructions: "Instructions",
     noNutrition: "Aucune information nutritionnelle disponible.",
     language: "Langue"
+  },
+  hi: {
+    whatsInYourFridge: "आपके फ्रिज में क्या है?",
+    placeholder: "उदा., चावल, ब्रोकोली, सोया सॉस, अदरक, लहसुन...",
+    generateRecipes: "रेसिपी बनाएं",
+    startNewSearch: "नई खोज शुरू करें",
+    craftingCulinary: "आपकी पाक कृतियाँ तैयार हो रही हैं...",
+    aiChefWorking: "हमारा AI शेफ पेंट्री में देख रहा है और पैन गरम कर रहा है। आपकी स्वादिष्ट रेसिपी कुछ ही पल में तैयार हो जाएगी!",
+    welcome: "आपके व्यक्तिगत किचन एआई में आपका स्वागत है!",
+    welcomeSub: "क्या पकाएं, यह सोचकर थक गए हैं? आपके पास जो सामग्री है, उसे दर्ज करें, और फ्रिजशेफ को अपनी अगली भोजन को प्रेरित करने दें।",
+    recipeIdeas: "रेसिपी आइडिया",
+    ingredients: "सामग्री",
+    nutritionalSummary: "पोषण संबंधी सारांश",
+    instructions: "निर्देश",
+    noNutrition: "कोई पोषण संबंधी जानकारी उपलब्ध नहीं है।",
+    language: "भाषा"
+  },
+  gu: {
+    whatsInYourFridge: "તમારા ફ્રિજમાં શું છે?",
+    placeholder: "દા.ત., ચોખા, બ્રોકોલી, સોયા સોસ, આદુ, લસણ...",
+    generateRecipes: "રેસિપી બનાવો",
+    startNewSearch: "નવી શોધ શરૂ કરો",
+    craftingCulinary: "તમારી રસોઈ રચનાઓ તૈયાર કરી રહ્યા છીએ...",
+    aiChefWorking: "અમારો AI શૅફ પેન્ટ્રીમાં જોઈ રહ્યો છે અને તવા ગરમ કરી રહ્યો છે. તમારી સ્વાદિષ્ટ વાનગીઓ થોડી જ વારમાં તૈયાર થઈ જશે!",
+    welcome: "તમારા વ્યક્તિગત કિચન AI માં આપનું સ્વાગત છે!",
+    welcomeSub: "શું રાંધવું તે વિચારીને થાકી ગયા છો? તમારી પાસે જે ઘટકો છે તે દાખલ કરો, અને ફ્રિજશેફને તમારી આગામી ભોજન માટે પ્રેરણા આપવા દો।",
+    recipeIdeas: "રેસિપી આઈડિયા",
+    ingredients: "ઘટકો",
+    nutritionalSummary: "પોષણ સારાંશ",
+    instructions: "સૂચનાઓ",
+    noNutrition: "કોઈ પોષક માહિતી ઉપલબ્ધ નથી।",
+    language: "ભાષા"
+  },
+  ta: {
+    whatsInYourFridge: "உங்கள் குளிர்சாதன பெட்டியில் என்ன இருக்கிறது?",
+    placeholder: "எ.கா., அரிசி, ப்ரோக்கோலி, சோயா சாஸ், இஞ்சி, பூண்டு...",
+    generateRecipes: "சமையல் குறிப்புகளை உருவாக்கு",
+    startNewSearch: "புதிய தேடலைத் தொடங்கு",
+    craftingCulinary: "உங்கள் சமையல் படைப்புகளை உருவாக்குகிறோம்...",
+    aiChefWorking: "எங்கள் AI சமையல்காரர் சரக்கறையைப் பார்த்து, பாத்திரங்களை சூடாக்குகிறார். உங்கள் சுவையான சமையல் குறிப்புகள் ஒரு கணத்தில் தயாராகிவிடும்!",
+    welcome: "உங்கள் தனிப்பட்ட சமையலறை AIக்கு வரவேற்கிறோம்!",
+    welcomeSub: "என்ன சமைப்பது என்று யோசித்து சோர்வடைந்துவிட்டீர்களா? உங்களிடம் உள்ள பொருட்களை உள்ளிடவும், உங்கள் அடுத்த உணவை FridgeChef ஊக்குவிக்கட்டும்.",
+    recipeIdeas: "சமையல் யோசனைகள்",
+    ingredients: "பொருட்கள்",
+    nutritionalSummary: "ஊட்டச்சத்து சுருக்கம்",
+    instructions: "வழிமுறைகள்",
+    noNutrition: "ஊட்டச்சத்து தகவல் எதுவும் கிடைக்கவில்லை.",
+    language: "மொழி"
+  },
+  or: {
+    whatsInYourFridge: "ଆପଣଙ୍କ ଫ୍ରିଜରେ କ'ଣ ଅଛି?",
+    placeholder: "ଉଦା., ଭାତ, ବ୍ରୋକୋଲି, ସୋୟା ସସ୍, ଅଦା, ରସୁଣ...",
+    generateRecipes: "ରେସିପି ପ୍ରସ୍ତୁତ କରନ୍ତୁ",
+    startNewSearch: "ନୂଆ ସନ୍ଧାନ ଆରମ୍ଭ କରନ୍ତୁ",
+    craftingCulinary: "ଆପଣଙ୍କ ରୋଷେଇ କଳାକୃତି ପ୍ରସ୍ତୁତ କରାଯାଉଛି...",
+    aiChefWorking: "ଆମର AI ରୋଷେୟା ପ୍ୟାଣ୍ଟ୍ରିରେ ଦେଖୁଛନ୍ତି ଏବଂ ପାତ୍ର ଗରମ କରୁଛନ୍ତି। ଆପଣଙ୍କ ସ୍ୱାଦିଷ୍ଟ ରେସିପିଗୁଡିକ କିଛି ମୁହୂର୍ତ୍ତରେ ପ୍ରସ୍ତୁତ ହୋଇଯିବ!",
+    welcome: "ଆପଣଙ୍କ ବ୍ୟକ୍ତିଗତ ରୋଷେଇ AIକୁ ସ୍ୱାଗତ!",
+    welcomeSub: "କ'ଣ ରାନ୍ଧିବେ ଭାବି ଭାବି କ୍ଳାନ୍ତ ହୋଇଗଲେଣି କି? ଆପଣଙ୍କ ପାଖରେ ଥିବା ସାମଗ୍ରୀଗୁଡିକ ପ୍ରବେଶ କରାନ୍ତୁ ଏବଂ ଫ୍ରିଜ୍‌ଶେଫ୍‌କୁ ଆପଣଙ୍କ ପରବର୍ତ୍ତୀ ଭୋଜନ ପାଇଁ ପ୍ରେରଣା ଦେବାକୁ ଦିଅନ୍ତୁ।",
+    recipeIdeas: "ରେସିପି ଆଇଡିଆ",
+    ingredients: "ସାମଗ୍ରୀ",
+    nutritionalSummary: "ପୋଷଣ ସାରାଂଶ",
+    instructions: "ନିର୍ଦ୍ଦେଶାବଳୀ",
+    noNutrition: "କୌଣସି ପୋଷଣ ସମ୍ବନ୍ଧୀୟ ସୂଚନା ଉପଲବ୍ଧ ନାହିଁ।",
+    language: "ଭାଷା"
+  },
+  pa: {
+    whatsInYourFridge: "ਤੁਹਾਡੇ ਫਰਿੱਜ ਵਿੱਚ ਕੀ ਹੈ?",
+    placeholder: "ਉਦਾਹਰਨ ਲਈ, ਚਾਵਲ, ਬਰੋਕਲੀ, ਸੋਇਆ ਸਾਸ, ਅਦਰਕ, ਲਸਣ...",
+    generateRecipes: "ਵਿਅੰਜਨ ਬਣਾਓ",
+    startNewSearch: "ਨਵੀਂ ਖੋਜ ਸ਼ੁਰੂ ਕਰੋ",
+    craftingCulinary: "ਤੁਹਾਡੀਆਂ ਰਸੋਈ ਰਚਨਾਵਾਂ ਤਿਆਰ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ...",
+    aiChefWorking: "ਸਾਡਾ ਏਆਈ ਸ਼ੈੱਫ ਪੈਂਟਰੀ ਵਿੱਚ ਦੇਖ ਰਿਹਾ ਹੈ ਅਤੇ ਪੈਨ ਗਰਮ ਕਰ ਰਿਹਾ ਹੈ। ਤੁਹਾਡੀਆਂ ਸੁਆਦੀ ਪਕਵਾਨਾਂ ਇੱਕ ਪਲ ਵਿੱਚ ਤਿਆਰ ਹੋ ਜਾਣਗੀਆਂ!",
+    welcome: "ਤੁਹਾਡੇ ਨਿੱਜੀ ਕਿਚਨ ਏਆਈ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ!",
+    welcomeSub: "ਕੀ ਪਕਾਉਣਾ ਹੈ, ਇਹ ਸੋਚ ਕੇ ਥੱਕ ਗਏ ਹੋ? ਤੁਹਾਡੇ ਕੋਲ ਜੋ ਸਮੱਗਰੀ ਹੈ, ਉਸਨੂੰ ਦਾਖਲ ਕਰੋ, ਅਤੇ ਫਰਿੱਜਸ਼ੈਫ ਨੂੰ ਆਪਣੇ ਅਗਲੇ ਭੋਜਨ ਲਈ ਪ੍ਰੇਰਿਤ ਕਰਨ ਦਿਓ।",
+    recipeIdeas: "ਵਿਅੰਜਨ ਵਿਚਾਰ",
+    ingredients: "ਸਮੱਗਰੀ",
+    nutritionalSummary: "ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਸਾਰ",
+    instructions: "ਹਦਾਇਤਾਂ",
+    noNutrition: "ਕੋਈ ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਜਾਣਕਾਰੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
+    language: "ਭਾਸ਼ਾ"
+  },
+  ur: {
+    whatsInYourFridge: "آپ کے فریج میں کیا ہے؟",
+    placeholder: "مثال کے طور پر، چاول، بروکولی، سویا ساس، ادرک، لہسن...",
+    generateRecipes: "ترکیبیں بنائیں",
+    startNewSearch: "نئی تلاش شروع کریں",
+    craftingCulinary: "آپ کے پکوان کی تخلیقات تیار ہو رہی ہیں...",
+    aiChefWorking: "ہمارا اے آئی شیف پینٹری میں دیکھ رہا ہے اور پین گرم کر رہا ہے۔ آپ کی مزیدار ترکیبیں ایک لمحے میں تیار ہو جائیں گی!",
+    welcome: "آپ کے ذاتی کچن اے آئی میں خوش آمدید!",
+    welcomeSub: "کیا پکانا ہے، یہ سوچ کر تھک گئے ہیں؟ آپ کے پاس جو اجزاء ہیں، وہ درج کریں، اور فرج شیف کو آپ کے اگلے کھانے کے لیے متاثر کرنے دیں۔",
+    recipeIdeas: "ترکیب کے آئیڈیاز",
+    ingredients: "اجزاء",
+    nutritionalSummary: "غذائی خلاصہ",
+    instructions: "ہدایات",
+    noNutrition: "کوئی غذائی معلومات دستیاب نہیں ہے۔",
+    language: "زبان"
   }
 };
 
@@ -178,6 +274,12 @@ export function FridgeChefClient() {
                             <SelectItem value="en">English</SelectItem>
                             <SelectItem value="es">Español</SelectItem>
                             <SelectItem value="fr">Français</SelectItem>
+                            <SelectItem value="hi">हिन्दी</SelectItem>
+                            <SelectItem value="gu">ગુજરાતી</SelectItem>
+                            <SelectItem value="ta">தமிழ்</SelectItem>
+                            <SelectItem value="or">ଓଡ଼ିଆ</SelectItem>
+                            <SelectItem value="pa">ਪੰਜਾਬੀ</SelectItem>
+                            <SelectItem value="ur">اردو</SelectItem>
                           </SelectContent>
                         </Select>
                      </div>
