@@ -12,12 +12,71 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, BookOpen } from 'lucide-react';
+import { ChefHat, CookingPot, GlassWater, LeafyGreen, Loader2, Utensils, Sparkles, BookOpen, Globe } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 type Recipe = GenerateRecipesOutput[0];
 
+const translations = {
+  en: {
+    whatsInYourFridge: "What's in your fridge?",
+    placeholder: "e.g., rice, broccoli, soy sauce, ginger, garlic...",
+    generateRecipes: "Generate Recipes",
+    startNewSearch: "Start New Search",
+    craftingCulinary: "Crafting your culinary creations...",
+    aiChefWorking: "Our AI chef is looking through the pantry and heating up the pans. Your delicious recipes will be ready in a moment!",
+    welcome: "Welcome to Your Personal Kitchen AI!",
+    welcomeSub: "Tired of wondering what to cook? Enter the ingredients you have, and let FridgeChef inspire your next meal.",
+    recipeIdeas: "Recipe Ideas",
+    ingredients: "Ingredients",
+    nutritionalSummary: "Nutritional Summary",
+    instructions: "Instructions",
+    noNutrition: "No nutritional information available.",
+    language: "Language"
+  },
+  es: {
+    whatsInYourFridge: "¿Qué hay en tu nevera?",
+    placeholder: "Ej., arroz, brócoli, salsa de soja, jengibre, ajo...",
+    generateRecipes: "Generar Recetas",
+    startNewSearch: "Empezar Nueva Búsqueda",
+    craftingCulinary: "Creando tus creaciones culinarias...",
+    aiChefWorking: "Nuestro chef de IA está mirando en la despensa y calentando las sartenes. ¡Tus deliciosas recetas estarán listas en un momento!",
+    welcome: "¡Bienvenido a tu IA de Cocina Personal!",
+    welcomeSub: "¿Cansado de preguntarte qué cocinar? Introduce los ingredientes que tienes y deja que FridgeChef inspire tu próxima comida.",
+    recipeIdeas: "Ideas de Recetas",
+    ingredients: "Ingredientes",
+    nutritionalSummary: "Resumen Nutricional",
+    instructions: "Instrucciones",
+    noNutrition: "No hay información nutricional disponible.",
+    language: "Idioma"
+  },
+  fr: {
+    whatsInYourFridge: "Qu'y a-t-il dans votre frigo ?",
+    placeholder: "Ex : riz, brocoli, sauce soja, gingembre, ail...",
+    generateRecipes: "Générer des Recettes",
+    startNewSearch: "Nouvelle Recherche",
+    craftingCulinary: "Préparation de vos créations culinaires...",
+    aiChefWorking: "Notre chef IA regarde dans le garde-manger et chauffe les poêles. Vos délicieuses recettes seront prêtes dans un instant !",
+    welcome: "Bienvenue sur votre IA de Cuisine Personnelle !",
+    welcomeSub: "Fatigué de vous demander quoi cuisiner ? Entrez les ingrédients que vous avez et laissez FridgeChef inspirer votre prochain repas.",
+    recipeIdeas: "Idées de Recettes",
+    ingredients: "Ingrédients",
+    nutritionalSummary: "Résumé Nutritionnel",
+    instructions: "Instructions",
+    noNutrition: "Aucune information nutritionnelle disponible.",
+    language: "Langue"
+  }
+};
+
 export function FridgeChefClient() {
   const { toast } = useToast();
+  const [language, setLanguage] = useState<keyof typeof translations>('en');
 
   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -26,6 +85,8 @@ export function FridgeChefClient() {
   const [formKey, setFormKey] = useState(Date.now());
 
   const [generateRecipesState, formAction, isPending] = useActionState(generateRecipesAction, null);
+
+  const t = translations[language];
 
   useEffect(() => {
     if (generateRecipesState?.success) {
@@ -50,6 +111,7 @@ export function FridgeChefClient() {
           recipeName: selectedRecipe.title,
           ingredients: selectedRecipe.ingredients,
           instructions: selectedRecipe.instructions,
+          language: language
         });
 
         if (nutritionResult.success) {
@@ -65,7 +127,7 @@ export function FridgeChefClient() {
       };
       fetchDetails();
     }
-  }, [selectedRecipe, toast]);
+  }, [selectedRecipe, toast, language]);
 
   const handleNewSearch = () => {
     setRecipes(null);
@@ -92,31 +154,49 @@ export function FridgeChefClient() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-headline text-xl">
                   <ChefHat size={24} className="text-primary-foreground" />
-                  What's in your fridge?
+                  {t.whatsInYourFridge}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form key={formKey} action={formAction}>
                   <Textarea
                     name="ingredients"
-                    placeholder="e.g., chicken breast, broccoli, soy sauce, ginger, garlic..."
+                    placeholder={t.placeholder}
                     className="min-h-[150px] text-base bg-background/50 focus-visible:ring-primary-foreground focus-visible:ring-2 border-border/60"
                     required
                   />
+                  <input type="hidden" name="language" value={language} />
+
+                   <div className="mt-4 space-y-2">
+                     <div className="space-y-1">
+                       <label htmlFor="language-select" className="text-sm font-medium flex items-center gap-2"><Globe className="w-4 h-4"/>{t.language}</label>
+                        <Select onValueChange={(value: keyof typeof translations) => setLanguage(value)} defaultValue={language}>
+                          <SelectTrigger id="language-select">
+                            <SelectValue placeholder="Select language" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="en">English</SelectItem>
+                            <SelectItem value="es">Español</SelectItem>
+                            <SelectItem value="fr">Français</SelectItem>
+                          </SelectContent>
+                        </Select>
+                     </div>
+                   </div>
+
                   <Button type="submit" className="mt-4 w-full bg-primary text-primary-foreground hover:bg-primary/90 text-md font-bold py-6" disabled={isPending}>
                     {isPending ? (
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                     ) : (
                       <>
                         <Sparkles className="mr-2 h-5 w-5" />
-                        Generate Recipes
+                        {t.generateRecipes}
                       </>
                     )}
                   </Button>
                 </form>
                 {recipes && (
                    <Button variant="outline" className="mt-2 w-full" onClick={handleNewSearch}>
-                     Start New Search
+                     {t.startNewSearch}
                    </Button>
                 )}
               </CardContent>
@@ -136,8 +216,8 @@ export function FridgeChefClient() {
                 className="flex flex-col items-center justify-center h-full min-h-[500px] rounded-2xl border-2 border-dashed border-border/30 gap-6 text-center"
               >
                 <Loader2 className="h-16 w-16 animate-spin text-primary" />
-                <h3 className="text-2xl font-bold text-foreground tracking-tight">Crafting your culinary creations...</h3>
-                <p className="text-muted-foreground max-w-sm">Our AI chef is looking through the pantry and heating up the pans. Your delicious recipes will be ready in a moment!</p>
+                <h3 className="text-2xl font-bold text-foreground tracking-tight">{t.craftingCulinary}</h3>
+                <p className="text-muted-foreground max-w-sm">{t.aiChefWorking}</p>
               </motion.div>
             ) : !recipes ? (
               <motion.div
@@ -149,9 +229,9 @@ export function FridgeChefClient() {
                 className="flex flex-col items-center justify-center h-full min-h-[500px] rounded-2xl border-2 border-dashed border-border/30 gap-6 text-center p-8"
               >
                 <CookingPot className="h-20 w-20 text-muted-foreground" strokeWidth={1.5} />
-                <h2 className="text-3xl font-bold tracking-tight text-foreground">Welcome to Your Personal Kitchen AI!</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-foreground">{t.welcome}</h2>
                 <p className="text-lg text-muted-foreground max-w-md">
-                  Tired of wondering what to cook? Enter the ingredients you have, and let FridgeChef inspire your next meal.
+                  {t.welcomeSub}
                 </p>
               </motion.div>
             ) : (
@@ -166,11 +246,11 @@ export function FridgeChefClient() {
                     <CardHeader>
                       <CardTitle className="font-headline text-2xl flex items-center gap-2">
                         <BookOpen className="text-primary-foreground" />
-                        Recipe Ideas
+                        {t.recipeIdeas}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ScrollArea className="h-full max-h-48">
+                      <ScrollArea>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {recipes.map((recipe, index) => (
                             <motion.button
@@ -208,13 +288,13 @@ export function FridgeChefClient() {
                         <CardContent className="space-y-8 px-6 pb-8">
                           <div className="grid md:grid-cols-2 gap-8">
                             <div>
-                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>Ingredients</h3>
+                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><LeafyGreen className="text-primary-foreground"/>{t.ingredients}</h3>
                               <ul className="list-disc list-inside space-y-1.5 text-muted-foreground bg-muted/30 p-4 rounded-md border border-border/30">
                                 {selectedRecipe.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
                               </ul>
                             </div>
                             <div>
-                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>Nutritional Summary</h3>
+                              <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><GlassWater className="text-primary-foreground"/>{t.nutritionalSummary}</h3>
                               {isFetchingNutrition ? (
                                 <div className="space-y-2 pt-2">
                                   <Skeleton className="h-4 w-full bg-muted/80" />
@@ -222,13 +302,13 @@ export function FridgeChefClient() {
                                   <Skeleton className="h-4 w-3/4 bg-muted/80" />
                                 </div>
                               ) : (
-                                <p className="text-muted-foreground">{nutritionalInfo || 'No nutritional information available.'}</p>
+                                <p className="text-muted-foreground">{nutritionalInfo || t.noNutrition}</p>
                               )}
                             </div>
                           </div>
                           <Separator />
                           <div>
-                            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>Instructions</h3>
+                            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>{t.instructions}</h3>
                             <div className="prose prose-neutral dark:prose-invert max-w-none">
                               <ol>
                                 {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}

@@ -1,4 +1,3 @@
-
 'use server';
 
 import {
@@ -14,6 +13,7 @@ import { z } from 'zod';
 
 const GenerateRecipesActionSchema = z.object({
   ingredients: z.string().min(3, { message: 'Please enter at least one ingredient (minimum 3 characters).' }),
+  language: z.string(),
 });
 
 type GenerateRecipesActionResult = 
@@ -26,6 +26,7 @@ export async function generateRecipesAction(
 ): Promise<GenerateRecipesActionResult> {
   const validatedFields = GenerateRecipesActionSchema.safeParse({
     ingredients: formData.get('ingredients'),
+    language: formData.get('language'),
   });
 
   if (!validatedFields.success) {

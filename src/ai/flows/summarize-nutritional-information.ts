@@ -15,6 +15,7 @@ const SummarizeNutritionalInformationInputSchema = z.object({
   recipeName: z.string().describe('The name of the recipe.'),
   ingredients: z.array(z.string()).describe('A list of ingredients in the recipe.'),
   instructions: z.array(z.string()).describe('The detailed, step-by-step instructions for the recipe.'),
+  language: z.string().describe("The language to generate the summary in. (e.g., 'English', 'Spanish')").optional(),
 });
 export type SummarizeNutritionalInformationInput = z.infer<typeof SummarizeNutritionalInformationInputSchema>;
 
@@ -34,6 +35,8 @@ const summarizeNutritionalInformationPrompt = ai.definePrompt({
   input: {schema: SummarizeNutritionalInformationInputSchema},
   output: {schema: SummarizeNutritionalInformationOutputSchema},
   prompt: `You are a nutritionist summarizing nutritional information for recipes.
+
+  Generate the entire response in the following language: {{{language}}}.
 
   Recipe Name: {{{recipeName}}}
   Ingredients: {{#each ingredients}}{{{this}}}, {{/each}}
