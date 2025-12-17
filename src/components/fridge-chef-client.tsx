@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from '@/lib/utils';
 
 type Recipe = GenerateRecipesOutput[0];
 
@@ -474,13 +475,11 @@ export function FridgeChefClient() {
                           <Separator />
                           <div>
                             <h3 className="text-xl font-semibold mb-3 flex items-center gap-2 font-headline"><Utensils className="text-primary-foreground"/>{t.instructions}</h3>
-                            <ScrollArea className="h-auto">
-                              <div className="prose prose-neutral dark:prose-invert max-w-none">
-                                <ol>
-                                  {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
-                                </ol>
-                              </div>
-                            </ScrollArea>
+                            <div className="prose prose-neutral dark:prose-invert max-w-none">
+                              <ol>
+                                {selectedRecipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
+                              </ol>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
